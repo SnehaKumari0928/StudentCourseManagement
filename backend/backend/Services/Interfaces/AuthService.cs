@@ -1,6 +1,11 @@
-﻿namespace backend.Services.Interfaces
+﻿using backend.DTOs.Auth;
+
+namespace backend.Services.Interfaces
 {
-    public class AuthService
+    public interface IAuthService
     {
+
+        Task<RegisterStudentDto> Register(RegisterStudentDto registerStudentDto);
+            Task<LoginStudentDto> Login(LoginStudentDto loginRequestDto);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using backend.Data;
 using backend.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Repositories.Implementations
 {
@@ -17,6 +18,12 @@ namespace backend.Repositories.Implementations
         {
              return await _context.Users.FindAsync(id);
         }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task CreateUserAsync(User student)
         {
             await _context.Users.AddAsync(student);

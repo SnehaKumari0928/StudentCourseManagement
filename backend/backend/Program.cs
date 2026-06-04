@@ -1,6 +1,10 @@
 
 using backend.Data;
+using backend.Helper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace backend
 {
@@ -20,6 +24,27 @@ namespace backend
                     );
                 }
             );
+
+            builder.Services.AddScoped<IJwtHelper, JwtHelper>();
+            var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = key
+
+                    };
+                });
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
