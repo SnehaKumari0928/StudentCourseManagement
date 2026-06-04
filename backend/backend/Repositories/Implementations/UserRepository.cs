@@ -1,0 +1,39 @@
+﻿using backend.Data;
+using backend.Entities;
+
+namespace backend.Repositories.Implementations
+{
+    public class UserRepository
+    {
+
+        private readonly AppDbContext _context;
+
+        public UserRepository(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public async  Task<User> GetUserByIdAsync(int id)
+        {
+             return await _context.Users.FindAsync(id);
+        }
+        public async Task CreateUserAsync(User student)
+        {
+            await _context.Users.AddAsync(student);
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdateUserAsync(User student)
+        {
+            _context.Users.Update(student);
+            await _context.SaveChangesAsync();
+
+        }
+        public async Task DeleteUserAsync(int id)
+        {
+
+            var user = await GetUserByIdAsync(id);
+
+            _context.Users.Remove(user);
+        }
+    }
+}
