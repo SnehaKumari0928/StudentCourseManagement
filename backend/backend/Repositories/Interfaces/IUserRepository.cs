@@ -6,7 +6,7 @@ namespace backend.Repositories.Interfaces
     {
 
         public Task<User> GetUserByIdAsync(int id);
-        public Task CreateUserAsync(User student);
+        public Task<User> CreateUserAsync(User student);
         public Task UpdateUserAsync(User student);
 
        public Task<User> GetByEmailAsync(string email);

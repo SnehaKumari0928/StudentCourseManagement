@@ -24,10 +24,11 @@ namespace backend.Repositories.Implementations
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task CreateUserAsync(User student)
+        public async Task<User> CreateUserAsync(User student)
         {
             await _context.Users.AddAsync(student);
             await _context.SaveChangesAsync();
+            return student;
         }
         public async Task UpdateUserAsync(User student)
         {
